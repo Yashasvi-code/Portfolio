@@ -1,0 +1,354 @@
+/* src/components/Skills.css */
+.skills-container {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #000000 0%, #000000 100%);
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 2rem;
+}
+.skills-container * {
+  cursor: inherit !important;
+}
+
+/* Armor Hall Styles */
+.armor-hall {
+  width: 100%;
+  max-width: 1500px;
+  text-align: center;
+  transition: opacity 0.5s ease;
+}
+
+.hall-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, #550000, #550000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 15px rgba(152, 80, 80, 0.5);
+}
+
+.hall-subtitle {
+  font-size: 1.2rem;
+  color: #a0a0a0;
+  margin-bottom: 3rem;
+}
+
+.armors-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.armor-item {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  left: 0px;
+  right: 0px;
+  width: 250px;
+  background: #000000;
+  /* height: 90vh; */
+}
+
+.armor-item:hover {
+  transform: translateY(-10px);
+}
+
+.armor-item.disabled {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.armor-image-container {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 8px;
+  /* background: rgba(0, 0, 0, 0);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); */
+    background: transparent !important; /* Change from rgba to transparent */
+  box-shadow: none !important; /* Remove box-shadow */
+  border: none !important; /* Remove any border */
+}
+
+.armor-image {
+  width: 100%;
+  height: 100%;
+  /* object-fit: cover; */
+  object-fit: cover; /* Change from cover to contain */
+  background: transparent !important; /* Ensure background is transparent */
+  transition: transform 0.5s ease;
+  z-index: 1;
+}
+.armor-image-container:hover .armor-image {
+  transform: translateY(-13px);
+}
+
+.armor-glow {
+  position: absolute;
+  top: 0;
+  left: 10;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+    z-index: 1;
+}
+
+.armor-glow.red {
+  background: radial-gradient(circle at center, rgba(255, 62, 62, 0.7) 10%, transparent 70%);
+}
+
+.armor-glow.blue {
+  background: radial-gradient(circle at center, rgba(62, 120, 255, 0.7) 0%, transparent 70%);
+}
+
+.armor-glow.purple {
+  background: radial-gradient(circle at center, rgba(180, 62, 255, 0.7) 0%, transparent 70%);
+}
+
+.armor-glow.green {
+  background: radial-gradient(circle at center, rgba(62, 255, 120, 0.7) 0%, transparent 70%);
+}
+
+.armor-glow.orange {
+  background: radial-gradient(circle at center, rgba(255, 180, 62, 0.7) 0%, transparent 70%);
+}
+
+.armor-item:hover .armor-glow {
+  opacity: 1;
+}
+
+.armor-name {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Armor Showcase Styles */
+.armor-showcase {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.949);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+  cursor: none !important;
+}
+#cursor {
+  z-index: 100001;
+}
+.close-button {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background 0.3s ease, transform 0.3s ease;
+  z-index: 1001;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background: rgba(255, 62, 62, 0.3);
+  transform: rotate(90deg);
+}
+
+.showcase-container {
+  position: relative;
+  width: 100%;
+  max-width: 2000px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.neon-platform {
+  position: absolute;
+  bottom: 8%;
+  width: 300px;
+  height: 20px;
+  background: radial-gradient(ellipse at center, #00d4ff 0%, #0080ff 50%, transparent 70%);
+  border-radius: 50%;
+  box-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff, 0 0 60px #00d4ff;
+  z-index: 100;
+  animation: pulse 2s infinite alternate;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff, 0 0 60px #00d4ff;
+  }
+  100% {
+    box-shadow: 0 0 25px #00d4ff, 0 0 50px #00d4ff, 0 0 80px #00d4ff;
+  }
+}
+
+.selected-armor {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: float 3s ease-in-out infinite;
+  margin-top: 40px;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+.selected-armor .armor-image-container {
+  width: 300px;
+  height: 400px;
+  margin-bottom: 1rem;
+}
+
+.selected-armor .armor-glow.active {
+  opacity: 1;
+  animation: glow-pulse 2s infinite alternate;
+}
+
+@keyframes glow-pulse {
+  0% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.armor-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 1rem;
+}
+
+.skills-display {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 3;
+}
+
+.skills-title {
+  font-size: 2rem;
+  margin-top: 3px;
+  font-weight: 500;
+  margin-bottom: 2.5rem;
+  color: #00d4ff;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.7);
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.skill-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.skill-item:hover {
+  transform: translateY(-5px);
+  background: rgba(0, 212, 255, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.skill-icon {
+  font-size: 1.5rem;
+  color: #00d4ff;
+  margin-bottom: 0.5rem;
+}
+
+.skill-name {
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Animations */
+.animating {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hall-title {
+    font-size: 2rem;
+  }
+  
+  .armors-container {
+    gap: 1rem;
+  }
+  
+  .armor-item {
+    width: 140px;
+  }
+  
+  .armor-image-container {
+    height: 180px;
+  }
+  
+  .selected-armor .armor-image-container {
+    width: 220px;
+    height: 300px;
+  }
+  
+  .skills-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+  }
+  
+  .neon-platform {
+    width: 220px;
+  }
+}

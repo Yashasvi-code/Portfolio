@@ -1,5 +1,11 @@
 @import "remixicon/fonts/remixicon.css";
 
+cursor{
+  z-index: 10000;
+ }
+ #infinite-tech-stack:hover{
+  color: steelblue;
+ }
 /* #root {
   max-width: 1280px;
   margin: 0 auto;

@@ -1,15 +1,22 @@
 // The exported code uses Tailwind CSS. Install Tailwind CSS in your dev environment to ensure all styles work.
 import React, { useState, useEffect, useRef } from "react";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebook } from '@fortawesome/free-brands-svg-icons';
+import Skills from './components/Skills';
+import Projects from './components/Projects';
+//import ContactBeacon from "./components/ContactBeacon";
+
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState("home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [cursorScale, setCursorScale] = useState(1);
   const heroRef = useRef<HTMLDivElement>(null);
-
 
   // Handle cursor position and scale effect
   useEffect(() => {
@@ -100,6 +107,27 @@ const App: React.FC = () => {
       });
     }
   };
+
+   // Scroll detection for navbar background
+  useEffect(() => {
+    const handleScroll = () => {
+      const isNotHome = window.scrollY > window.innerHeight * 0.8; // Adjust threshold as needed
+      setHasScrolled(isNotHome);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Section detection (your existing logic)
+  useEffect(() => {
+    const handleScroll = () => {
+      // Your existing section detection logic here
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="font-sans min-h-screen bg-black text-white">
       {/* Preloader */}
@@ -125,11 +153,15 @@ const App: React.FC = () => {
         </div>
       )}
       {/* Header/Navigation */}
-      <header className="fixed top-0 left-0 w-full z-40 transition-all duration-300 bg-black bg-opacity-80 backdrop-blur-sm">
+      <header className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 ${
+      hasScrolled || activeSection !== 'home' 
+        ? 'bg-black bg-opacity-80 backdrop-blur-sm' 
+        : 'bg-transparent'
+    }`}>
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="text-xl font-semibold tracking-wider">
+          <div className="text-xl font-serif tracking-tight">
             <a href="#home" className="hover:text-gray-300 transition-colors">
-              YASHASVI TIWARI
+              Yashasvi Tiwari
             </a>
           </div>
           {/* Desktop Navigation */}
@@ -206,9 +238,9 @@ const App: React.FC = () => {
           ref={heroRef}
           className="relative min-h-screen flex items-center justify-center overflow-hidden"
           style={{
-            backgroundImage: `url('https://static.readdy.ai/image/78d823d9acec4a242f91f8f6f1d8e7cf/4e2900369d74cd4c6e58c53118aedf65.jpeg')`,
+            backgroundImage: `url('/src/assets/iron-man.jpg')`,
             backgroundSize: "cover",
-            backgroundPosition: "top",
+            backgroundPosition: "center",
           }}
         >
           <div
@@ -218,9 +250,9 @@ const App: React.FC = () => {
             }}
           ></div>
           <div className="container mx-auto px-6 z-10">
-            <div className="max-w-3xl mx-auto text-center">
+            <div className="max-w-4xl mx-auto text-center">
               <h1
-                className="text-6xl sm:text-8xl md:text-9xl font-bold tracking-tight mb-6 opacity-80"
+                className="text-6xl sm:text-8xl md:text-9xl font-serif font-semibold tracking-tight mb-6 opacity-50"
                 style={{
                   transform: `perspective(1000px) rotateX(${
                     (cursorPosition.y - window.innerHeight / 2) * 0.01
@@ -246,11 +278,11 @@ const App: React.FC = () => {
                   </span>
                 </div>
               </h1>
-              <p className="text-xl text-gray-300 mb-10 animate-fadeIn animation-delay-900">
+              {/* <p className="text-xl text-gray-300 mb-10 animate-fadeIn animation-delay-900">
                 Crafting digital experiences that merge creativity with
                 technical excellence
-              </p>
-              <div className="flex justify-center space-x-4 animate-fadeIn animation-delay-1200">
+              </p> */}
+              {/* <div className="flex justify-center space-x-4 animate-fadeIn animation-delay-1200">
                 <button
                   onClick={() => navigateTo("projects")}
                   className="px-8 py-3 bg-white text-black text-sm uppercase tracking-wider font-medium hover:bg-gray-200 transition-colors !rounded-button whitespace-nowrap cursor-pointer"
@@ -263,7 +295,7 @@ const App: React.FC = () => {
                 >
                   Contact Me
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           {/* Scroll indicator */}
@@ -283,9 +315,14 @@ const App: React.FC = () => {
                   <span className="text-white">Me...</span>
                 </h2>
                 <p className="text-gray-300 mb-8 text-lg">
-                  I started my journey in 2020 and have worked with top brands
-                  like Google, YouTube, IBM, Country Delight, Magic EdTech,
-                  Rapido, and more.
+                  I'm a web developer who loves turning ideas into functional,
+                  high-performing websites. Whether it's crafting clean,
+                  efficient code or optimizing user experiences, I thrive on
+                  building digital solutions that make an impact. My approach?
+                  Write elegant code, prioritize performance, and create
+                  seamless experiences that keep users coming back. If you want
+                  a developer who brings both creativity and precision to the
+                  table, I’m your person!
                 </p>
                 <p className="text-gray-300 text-lg mb-8">
                   I specialize in designing visually compelling websites,
@@ -295,32 +332,34 @@ const App: React.FC = () => {
                   storytelling, ensuring that every project is both
                   aesthetically striking and functionally seamless.
                 </p>
-                 <button
-          onClick={() => {
-            const link = document.createElement('a');
-            link.href = '/public/Portfolio_Resume.pdf';
-            link.download = 'Yashasvi_Tiwari_Resume.pdf';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          }}
+                <button
+                  onClick={() => {
+                    const link = document.createElement("a");
+                    link.href = "/public/DarkthemeRESUME.pdf";
+                    link.download = "Yashasvi_Tiwari_Resume.pdf";
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
                   className="inline-flex items-center px-6 py-3 bg-white text-black text-sm uppercase tracking-wider font-medium hover:bg-gray-200 transition-colors !rounded-button whitespace-nowrap cursor-pointer"
                 >
                   Download Resume <i className="fas fa-download ml-2"></i>
                 </button>
-                <div className="absolute -bottom-20 right-0">
+                {/* <div className="absolute -bottom-20 right-0">
                   <div className="relative w-32 h-32">
                     <img
-                      src="https://public.readdy.ai/ai/img_res/10c34ac2-1ed6-4f4b-9a19-eed0b974d5af.jpg"
+                      src="./src/assets/Yashasvi.png"
                       alt="Logo"
                       className="w-full h-full object-contain animate-spin-slow"
                     />
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="relative">
                 <div className="absolute top-4 right-4 text-right z-10">
-                  <p className="text-[#550000] text-xl font-bold mb-1">Yashasvi Tiwari</p>
+                  <p className="text-[#550000] text-xl font-bold mb-1">
+                    Yashasvi Tiwari
+                  </p>
                   <p className="text-white text-xl">Web Developer</p>
                 </div>
                 <div
@@ -337,7 +376,7 @@ const App: React.FC = () => {
                     const glareElement =
                       e.currentTarget.querySelector(".glare-effect");
                     if (glareElement) {
-                      glareElement.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 60%)`;
+                      glareElement.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(92, 93, 85, 0.47) 0%, rgba(79, 83, 64, 0.19))`;
                     }
                   }}
                   onMouseLeave={(e) => {
@@ -363,7 +402,7 @@ const App: React.FC = () => {
           </div>
         </section>
         {/* Projects Section */}
-        <section id="projects" className="py-24 bg-black">
+        {/* <section id="projects" className="py-24 bg-black">
           <div className="container mx-auto px-6">
             <h2 className="text-4xl font-bold mb-6 text-center">PROJECTS</h2>
             <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16">
@@ -439,7 +478,10 @@ const App: React.FC = () => {
               </button>
             </div>
           </div>
-        </section>
+        </section> */}
+        <section id="projects" className="py-24 bg-black">
+        <Projects />
+      </section>
         {/* Skills Section */}
         {/* Tech Stack Infinite Scroll */}
         <div className="py-12 bg-black overflow-hidden">
@@ -459,7 +501,7 @@ const App: React.FC = () => {
                 .flat()
                 .map((tech, index) => (
                   <div key={index} className="flex items-center space-x-8 px-4">
-                    <span className="text-2xl text-gray-400 whitespace-nowrap">
+                    <span className="text-2xl text-gray-400 whitespace-nowrap hover:text-blue-700 hover:shadow-lg hover:shadow-blue-500/50 transition-colors duration-300">
                       {tech}
                     </span>
                   </div>
@@ -484,7 +526,7 @@ const App: React.FC = () => {
                       key={index}
                       className="flex items-center space-x-8 px-4"
                     >
-                      <span className="text-2xl text-gray-400 whitespace-nowrap">
+                      <span className="text-2xl text-gray-400 whitespace-nowrap hover:text-blue-700 hover:shadow-lg hover:shadow-blue-500/50 transition-colors duration-300">
                         {tech}
                       </span>
                     </div>
@@ -493,108 +535,10 @@ const App: React.FC = () => {
             </div>
           </div>
         </div>
-        <section id="skills" className="py-24 bg-gray-900">
-          <div className="container mx-auto px-6">
-            <h2 className="text-4xl font-bold mb-6 text-center">SKILLS</h2>
-            <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16">
-              My technical toolkit and expertise that I bring to every project.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[
-                {
-                  title: "Frontend Development",
-                  icon: "fa-code",
-                  skills: [
-                    "HTML5/CSS3",
-                    "JavaScript (ES6+)",
-                    "React.js",
-                    "Vue.js",
-                    "TypeScript",
-                    "Responsive Design",
-                  ],
-                },
-                {
-                  title: "Backend Development",
-                  icon: "fa-server",
-                  skills: [
-                    "Node.js",
-                    "Express",
-                    "RESTful APIs",
-                    "GraphQL",
-                    "MongoDB",
-                    "Firebase",
-                  ],
-                },
-                {
-                  title: "UI/UX Design",
-                  icon: "fa-palette",
-                  skills: [
-                    "Figma",
-                    "Adobe XD",
-                    "Wireframing",
-                    "Prototyping",
-                    "User Research",
-                    "Accessibility",
-                  ],
-                },
-                {
-                  title: "Tools & Methods",
-                  icon: "fa-toolbox",
-                  skills: [
-                    "Git/GitHub",
-                    "Webpack",
-                    "Jest",
-                    "CI/CD",
-                    "Agile/Scrum",
-                    "Performance Optimization",
-                  ],
-                },
-                {
-                  title: "CMS & E-Commerce",
-                  icon: "fa-shopping-cart",
-                  skills: [
-                    "WordPress",
-                    "Shopify",
-                    "WooCommerce",
-                    "Contentful",
-                    "Strapi",
-                    "Headless CMS",
-                  ],
-                },
-                {
-                  title: "Mobile Development",
-                  icon: "fa-mobile-alt",
-                  skills: [
-                    "React Native",
-                    "Progressive Web Apps",
-                    "App Performance",
-                    "Cross-platform Development",
-                  ],
-                },
-              ].map((skillGroup, index) => (
-                <div
-                  key={index}
-                  className="skill-card bg-gray-800 p-8 rounded-lg hover:bg-gray-700 transition-colors duration-300"
-                >
-                  <div className="w-16 h-16 bg-white bg-opacity-10 rounded-full flex items-center justify-center mb-6">
-                    <i className={`fas ${skillGroup.icon} text-2xl`}></i>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4">
-                    {skillGroup.title}
-                  </h3>
-                  <ul className="space-y-2">
-                    {skillGroup.skills.map((skill, idx) => (
-                      <li key={idx} className="flex items-center text-gray-300">
-                        <i className="fas fa-check text-xs mr-2"></i>
-                        <span>{skill}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <section id="skills">
+        <Skills />
+      </section>
+
         {/* Contact Section */}
         <section id="contact" className="py-24 bg-black">
           <div className="container mx-auto px-6 flex flex-col items-center text-center">
@@ -609,16 +553,44 @@ const App: React.FC = () => {
               projects or even a casual conversation—feel free to get in touch!
             </p>
             <button className="group px-8 py-4 bg-transparent border border-white/20 rounded-full hover:bg-white/10 transition-all duration-300 mb-16 !rounded-button whitespace-nowrap cursor-pointer">
+            <a href="https://www.linkedin.com/in/yashasvitiwariii/#contact" target="_blank" rel="noopener noreferrer" className="text-white text-lg font-medium">
               <span className="flex items-center">
                 Contact Me
                 <i className="fas fa-arrow-up-right-from-square ml-2 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
               </span>
+            </a>
             </button>
+             <div className="flex justify-center space-x-12 mb-12">
+              <a
+                href="https://www.linkedin.com/in/yashasvitiwariii/#linkedin"
+                data-readdy="true"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <i className="fab fa-linkedin text-2xl"></i>
+              </a>
+              <a
+                href="https://github.com/Yashasvi-code//#github"
+                data-readdy="true"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <i className="fab fa-github text-2xl"></i>
+              </a>
+              <a
+                href="mailto:yashasvitiwari945@email.com"
+                data-readdy="true"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <i className="fa-solid fa-envelope text-2xl"></i>
+              </a>
+            </div>
           </div>
         </section>
+        {/* <section id="contact"> 
+          <ContactBeacon />
+        </section> */}
       </main>
       {/* Footer */}
-      <footer className="py-12 bg-gray-900">
+      {/* <footer className="py-12 bg-gray-900">
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-6 md:mb-0">
@@ -637,7 +609,7 @@ const App: React.FC = () => {
                 ].map((icon, index) => (
                   <a
                     key={index}
-                    href="https://#"
+                    href="https:www.linkedin.com/in/yashasvitiwariii//#linkedin"
                     data-readdy="true"
                     className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors cursor-pointer"
                   >
@@ -652,7 +624,7 @@ const App: React.FC = () => {
             </div>
           </div>
         </div>
-      </footer>
+      </footer> */}
       {/* Scroll to top button */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -664,7 +636,7 @@ const App: React.FC = () => {
       </button>
       {/* Custom Cursor */}
       <div
-        className="custom-cursor hidden md:block fixed w-8 h-8 pointer-events-none z-50 rounded-full border-2 border-white transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 mix-blend-difference"
+        className="custom-cursor hidden md:block fixed w-8 h-8 pointer-events-none z-50 rounded-full border-2 border-white transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 mix-blend-difference z-index-100000"
         style={{
           left: `${cursorPosition.x}px`,
           top: `${cursorPosition.y}px`,

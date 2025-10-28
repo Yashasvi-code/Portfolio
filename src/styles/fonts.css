@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'Times New Roman';
+  src: url('/src/styles/times.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* Optional: Controls how the font loads */
+}
